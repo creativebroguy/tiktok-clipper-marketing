@@ -74,21 +74,27 @@ def send_telegram_message(
         "curl",
         "-s",
         "-m",
-        "15",
+        "40",
         "--http1.1",
         "-X",
         "POST",
         url,
         "-H",
         "Content-Type: application/json",
+        "-H",
+        "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
         "-d",
         body,
     ]
 
-    max_attempts = 2
+    max_attempts = 3
     for attempt in range(max_attempts):
         res = subprocess.run(cmd, capture_output=True, text=True)
         if res.returncode != 0:
+            if res.returncode == 28 and attempt < max_attempts - 1:
+                print("  [TELEGRAM] Request timeout (code 28), mencoba lagi dalam 5 detik...")
+                time.sleep(5)
+                continue
             raise RuntimeError(f"Gagal memanggil Telegram curl (code {res.returncode}): {res.stderr}")
 
         try:
@@ -101,8 +107,8 @@ def send_telegram_message(
 
         retry = data.get("parameters", {}).get("retry_after")
         if retry and attempt < max_attempts - 1:
-            print(f"  [TELEGRAM] Menunggu cooldown aktivasi {retry + 1} detik...")
-            time.sleep(retry + 1)
+            print(f"  [TELEGRAM] Menunggu cooldown aktivasi {retry + 2} detik...")
+            time.sleep(retry + 2)
             continue
 
         err_desc = data.get("description", str(data))

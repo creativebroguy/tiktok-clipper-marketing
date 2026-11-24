@@ -50,7 +50,15 @@ def telegram_api(method: str, payload: dict[str, Any] | None = None, token: str 
         raise ValueError("TELEGRAM_BOT_TOKEN belum diset di .env!")
 
     url = f"https://api.telegram.org/bot{bot_token}/{method}"
-    cmd = ["curl", "-s", "-m", "35", "--http1.1"]
+    cmd = [
+        "curl",
+        "-s",
+        "-m",
+        "35",
+        "--http1.1",
+        "-H",
+        "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    ]
     if payload is not None:
         cmd.extend(["-X", "POST", url, "-H", "Content-Type: application/json", "-d", json.dumps(payload)])
     else:

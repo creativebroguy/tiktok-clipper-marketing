@@ -22,4 +22,10 @@ Thumbs.db
 
 # Logs
 logs/*.json
+logs/*.jsonl
 !logs/.gitkeep
+
+# Compiled binaries
+scripts/generate_overlays
+scripts/transcribe
+*.o
