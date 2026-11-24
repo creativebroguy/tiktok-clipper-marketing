@@ -12,7 +12,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime
@@ -61,22 +63,54 @@ def send_telegram_message(
 
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     payload = {
-        "chat_id": target_chat,
+        "chat_id": int(target_chat) if str(target_chat).lstrip("-").isdigit() else target_chat,
         "text": text,
         "parse_mode": parse_mode,
         "disable_web_page_preview": True,
     }
 
-    body = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
+    body = json.dumps(payload)
+    cmd = [
+        "curl",
+        "-s",
+        "-m",
+        "15",
+        "--http1.1",
+        "-X",
+        "POST",
         url,
-        data=body,
-        method="POST",
-        headers={"Content-Type": "application/json; charset=UTF-8"},
-    )
+        "-H",
+        "Content-Type: application/json",
+        "-d",
+        body,
+    ]
 
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    max_attempts = 2
+    for attempt in range(max_attempts):
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        if res.returncode != 0:
+            raise RuntimeError(f"Gagal memanggil Telegram curl (code {res.returncode}): {res.stderr}")
+
+        try:
+            data = json.loads(res.stdout)
+        except Exception:
+            raise RuntimeError(f"Respons Telegram tidak valid: {res.stdout}")
+
+        if data.get("ok"):
+            return data
+
+        retry = data.get("parameters", {}).get("retry_after")
+        if retry and attempt < max_attempts - 1:
+            print(f"  [TELEGRAM] Menunggu cooldown aktivasi {retry + 1} detik...")
+            time.sleep(retry + 1)
+            continue
+
+        err_desc = data.get("description", str(data))
+        if retry:
+            raise RuntimeError(f"Telegram Rate Limit (429): Tunggu {retry} detik lagi.")
+        raise RuntimeError(f"Telegram API Error: {err_desc}")
+
+    return {}
 
 
 def fetch_recent_chat_id(token: str | None = None) -> list[dict[str, Any]]:
