@@ -1,0 +1,64 @@
+{
+  "channels": [
+    {
+      "id": "channel_utama",
+      "name": "Channel Utama Brand",
+      "handle": "@brand_utama",
+      "enabled": true,
+      "niche": "edukasi & promo produk",
+      "tone": "profesional, jelas, langsung ke manfaat",
+      "caption_template": "{hook}\n\n{cta}\n\n{hashtags}",
+      "default_hook": "Wajib tahu ini sebelum beli!",
+      "default_cta": "Cek keranjang kuning atau klik link di bio.",
+      "default_hashtags": [
+        "#fyp",
+        "#tipsmarketing",
+        "#rekomendasi"
+      ],
+      "fit_mode": "crop",
+      "upload_mode": "inbox",
+      "token_env_var": "TIKTOK_TOKEN_CHANNEL_UTAMA",
+      "posting_window": "12:00, 19:00 WIB"
+    },
+    {
+      "id": "channel_clipper_1",
+      "name": "Channel Clipper 1",
+      "handle": "@clipper_satu",
+      "enabled": true,
+      "niche": "storytelling & review singkat",
+      "tone": "santai, relatable, memancing komentar",
+      "caption_template": "{hook}\n\nMenurut kalian gimana? Tulis di komentar!\n\n{hashtags}",
+      "default_hook": "Jujur baru tahu cara ini ternyata seefektif itu...",
+      "default_cta": "Simpan video ini biar nggak lupa.",
+      "default_hashtags": [
+        "#fyp",
+        "#reviewjujur",
+        "#viralindonesia"
+      ],
+      "fit_mode": "blur",
+      "upload_mode": "inbox",
+      "token_env_var": "TIKTOK_TOKEN_CHANNEL_CLIPPER_1",
+      "posting_window": "13:00, 20:00 WIB"
+    },
+    {
+      "id": "channel_clipper_2",
+      "name": "Channel Clipper 2",
+      "handle": "@clipper_dua",
+      "enabled": false,
+      "niche": "highlight cepat & fakta menarik",
+      "tone": "cepat, to-the-point, bikin penasaran",
+      "caption_template": "{hook}\n\n{cta}\n\n{hashtags}",
+      "default_hook": "3 detik pertama ini yang bikin beda!",
+      "default_cta": "Follow untuk part berikutnya.",
+      "default_hashtags": [
+        "#fyp",
+        "#highlights",
+        "#kontenpendek"
+      ],
+      "fit_mode": "crop",
+      "upload_mode": "inbox",
+      "token_env_var": "TIKTOK_TOKEN_CHANNEL_CLIPPER_2",
+      "posting_window": "15:00, 21:00 WIB"
+    }
+  ]
+}
