@@ -66,6 +66,30 @@ Hasil potongan akan tersimpan di `clips/<batch>/` dan paket siap upload per chan
   python3 scripts/upload_tiktok.py --batch promo_batch_01 --mode inbox
   ```
 
+## Notifikasi Otomatis ke Telegram
+
+Setiap hasil kerja tim (**Ade** rencana konten, **Uki** hasil clipping video, dan **Flo** hasil upload) otomatis dikirim ke Telegram Anda:
+
+1. Buka Telegram dan cari **@BotFather**, lalu kirim `/newbot`.
+2. Beri nama & username bot (contoh: `MyClipperTeamBot`), Anda akan menerima **HTTP API Token**.
+3. Salin `.env.example` ke `.env` lalu masukkan token:
+   ```env
+   TELEGRAM_BOT_TOKEN=123456789:ABCdefGhI...
+   ```
+4. Buka bot baru Anda di Telegram, lalu klik tombol **Start** (atau kirim `/start`).
+5. Jalankan perintah otomatis untuk mendeteksi Chat ID Anda:
+   ```bash
+   python3 scripts/notify_telegram.py --get-chat-id
+   ```
+6. Salin Chat ID yang muncul ke `.env`:
+   ```env
+   TELEGRAM_CHAT_ID=123456789
+   ```
+7. Uji koneksi notifikasi:
+   ```bash
+   python3 scripts/notify_telegram.py --test
+   ```
+
 ## Catatan Penting Multi-Channel TikTok
 - **API Resmi (Disarankan):** Menggunakan TikTok Content Posting API v2 (`inbox` untuk masuk sebagai draft agar aman direview sebelum publish, atau `direct` jika aplikasi sudah disetujui untuk Direct Post).
 - **Anti-Duplicate Content:** Untuk menghindari penurunan jangkauan saat upload ke banyak channel, gunakan variasi hook, caption, hashtag, dan jadwal tayang per channel di `config/channels.json`.

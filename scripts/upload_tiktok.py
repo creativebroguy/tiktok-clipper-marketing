@@ -242,6 +242,19 @@ def main() -> int:
     log_file = LOGS_DIR / f"upload_{args.batch}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     log_file.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nLog disimpan ke: {log_file}")
+
+    # Kirim notifikasi Telegram otomatis jika kredensial tersedia di .env
+    try:
+        sys.path.insert(0, str(ROOT_DIR))
+        from scripts.notify_telegram import get_credentials, send_telegram_message, format_upload_report
+        t_token, t_chat_id = get_credentials()
+        if t_token and t_chat_id:
+            notif_text = format_upload_report(report)
+            send_telegram_message(notif_text, t_token, t_chat_id)
+            print("Laporan upload berhasil dikirim ke Telegram Anda!")
+    except Exception:
+        pass
+
     return 0
 
 

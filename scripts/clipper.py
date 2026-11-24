@@ -349,6 +349,18 @@ def cmd_clip(args: argparse.Namespace) -> int:
     print("\nSelesai! Paket siap upload dibuat untuk channel berikut:")
     for row in summary_channels:
         print(f"  - {row['channel_id']}: {row['clips_count']} clip -> {row['dir']}")
+
+    # Kirim notifikasi Telegram otomatis jika kredensial tersedia di .env
+    try:
+        sys.path.insert(0, str(ROOT_DIR))
+        from scripts.notify_telegram import get_credentials, send_telegram_message, format_clipping_report
+        t_token, t_chat_id = get_credentials()
+        if t_token and t_chat_id:
+            notif_msg = format_clipping_report(batch_name, len(segments), [s["channel_id"] for s in summary_channels])
+            send_telegram_message(notif_msg, t_token, t_chat_id)
+            print("  [TELEGRAM] Laporan clipping berhasil dikirim ke Telegram Anda!")
+    except Exception:
+        pass
     return 0
 
 
