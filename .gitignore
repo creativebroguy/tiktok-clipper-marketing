@@ -28,4 +28,8 @@ logs/*.jsonl
 # Compiled binaries
 scripts/generate_overlays
 scripts/transcribe
+scripts/generate_sample_ctd_overlay
+scripts/generate_ctd_newsroom_overlays
+scripts/generate_5_ctd_overlays
+scripts/generate_5_distinct_overlays
 *.o
