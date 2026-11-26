@@ -42,31 +42,15 @@ renderExactPNG(to: "\(outDir)/hook_card.png") { ctx in
     let cPara = NSMutableParagraphStyle()
     cPara.alignment = .center
 
-    // Top Left Brand Logo: [B] BROGUY
-    let logoBoxW: CGFloat = 52
-    let logoBoxH: CGFloat = 52
-    let logoX: CGFloat = 70
-    let logoY: CGFloat = 1770
-
-    let logoBox = NSBezierPath(roundedRect: NSRect(x: logoX, y: logoY, width: logoBoxW, height: logoBoxH), xRadius: 10, yRadius: 10)
-    NSColor.white.setStroke()
-    logoBox.lineWidth = 3.5
-    logoBox.stroke()
-
-    let bLetterAttrs: [NSAttributedString.Key: Any] = [
-        .font: NSFont.boldSystemFont(ofSize: 32),
-        .foregroundColor: NSColor.white,
-        .paragraphStyle: cPara
-    ]
-    let bLetter = NSAttributedString(string: "B", attributes: bLetterAttrs)
-    bLetter.draw(in: NSRect(x: logoX, y: logoY + 4, width: logoBoxW, height: 42))
-
-    let brandNameAttrs: [NSAttributedString.Key: Any] = [
-        .font: NSFont.boldSystemFont(ofSize: 36),
-        .foregroundColor: NSColor.white
-    ]
-    let brandName = NSAttributedString(string: "BROGUY", attributes: brandNameAttrs)
-    brandName.draw(at: NSPoint(x: logoX + logoBoxW + 18, y: logoY + 9))
+    // Top Left Official Brand Logo: Logo Broguy Panjang.png (White)
+    let logoPath = "/Users/user/.gemini/antigravity/scratch/tiktok-clipper-marketing/assets/brand/Logo Broguy Panjang.png"
+    if let logoImage = NSImage(contentsOfFile: logoPath) {
+        let targetLogoW: CGFloat = 260
+        let targetLogoH: CGFloat = targetLogoW * (209.0 / 828.0) // ~65.6px
+        let logoX: CGFloat = 70
+        let logoY: CGFloat = 1765
+        logoImage.draw(in: NSRect(x: logoX, y: logoY, width: targetLogoW, height: targetLogoH))
+    }
 
     // Top Right Badge: "Fashion Info"
     let badgeW: CGFloat = 220
